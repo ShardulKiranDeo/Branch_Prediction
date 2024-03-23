@@ -84,6 +84,48 @@ int br_check(string &h, int length)
  }
     return 0;
 }
+int pow2(int k){
+    return (1 << k); // Compute 2 raised to the power of k
+}
+
+int bin2dec(string &c) { // c has to be 13 bit..
+    int flag5 = 0;
+    if(c[0]=='1'){ 
+        flag5++;
+        int i = 12;
+        while(c[i] != '1'){
+            c[i] = '1';
+            i--;
+        }
+        c[i] = '0';
+        for(int j=0; j<13; j++){
+            if(c[j] == '0'){
+                c[j] = '1';
+            }
+            else
+                c[j] = '0';
+        }
+    }
+    int sum = 0;
+    for(int i=12; i>=0; i--){
+        int k = c[i] - '0';
+        sum += k * pow2(12 - i);
+    }
+    if(flag5 == 0)
+        return sum;
+    else    
+        return -1 * sum;
+}
+
+int sboffset(string &a){
+     string b = "0";
+     b+=a[0];
+     b+=a[24];
+     b+=a.substr(1,6);
+     b+=a.substr(20,4);
+     return bin2dec(b);
+}
+
 
 struct BTBEntry {
     vector<int> branchAddress;
