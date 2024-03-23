@@ -118,11 +118,12 @@ int bin2dec(string &c) { // c has to be 13 bit..
 }
 
 int sboffset(string &a){
-     string b = "0";
+     string b ;
      b+=a[0];
      b+=a[24];
      b+=a.substr(1,6);
      b+=a.substr(20,4);
+     b+='0';
      return bin2dec(b);
 }
 
