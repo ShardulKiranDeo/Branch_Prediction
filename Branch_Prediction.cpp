@@ -363,7 +363,7 @@ void predict_next(long long current_address, long long next_address, long long l
 }
 
 void Accuracy()
-{
+{cout<<"Accuracy -"<<endl;
     int i = 0;
     float aAlways_taken = 0, aAlways_not_taken = 0, aOne_bit = 0, aTwo_bit = 0;
     while (i < number_of_branches)
@@ -398,11 +398,12 @@ void Accuracy()
 }
 
 void printBTB()
-{
+{   cout<<"Branch Target Buffer - "<<endl;
+    cout<<"Branch_Address "<<"Target_Address "<<"Always_Taken "<<"Always_Not_Taken "<<"1-bit "<<"2-bit"<<endl;
     int i;
     for (i = 0; i < number_of_branches; i++)
     {
-        cout << BTB.branchAddress[i] << " " << BTB.targetAddress[i] << " " << BTB.validAlways_taken[i] << " " << BTB.validAlways_not_taken[i] << " " << BTB.validone_bit[i] << " " << BTB.validtwo_bit[i] << endl;
+        cout <<hex<<"   "<<BTB.branchAddress[i] << "       " << BTB.targetAddress[i] << "         " << BTB.validAlways_taken[i] << "              " << BTB.validAlways_not_taken[i] << "           " << BTB.validone_bit[i] << "     " << BTB.validtwo_bit[i] << endl;
     }
 }
 
