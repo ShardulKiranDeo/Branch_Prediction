@@ -151,7 +151,7 @@ int number_of_branches = 0;
 int one_state = 0;
 int two_state[2] = {0,0};
 
-void predict_next(int current_address, string predictor_method, int next_address, int label)
+void predict_next(int current_address, int next_address, int label)
 {number_of_branches++;
  History.branchAddress.push_back(current_address);
  BTB.branchAddress.push_back(current_address);
