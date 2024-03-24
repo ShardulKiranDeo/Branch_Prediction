@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+//returns unsigned value in long long data type from the binary input
 long long bitset_to_signed_long_long(const bitset<32> &bits)
 {
     long long res = bits.to_ullong();
