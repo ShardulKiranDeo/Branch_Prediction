@@ -1,0 +1,6 @@
+Fac_Test_Lab->
+
+Acuracy of Always Taken = 9.96332%
+Acuracy of Always not Taken = 90.0367%
+Acuracy of One bit = 84.9723%
+Acuracy of Two bit = 90.3213%
