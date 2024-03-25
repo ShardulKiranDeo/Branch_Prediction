@@ -1,3 +1,12 @@
+
+This part peeks into the branch instruction prediction within a pipelined processor design. When a branch instruction is encountered, it can lead to pipeline stalls or "nops" due to uncertainty about the next instruction. To mitigate this, a branch predictor is used to anticipate branch outcomes for instructions like "bne," "beq," "bge," "ble," "beqz," and "bnez." Predictors, such as Two-bit or One-bit predictors, are employed to estimate whether a branch will be taken or not.
+
+    While these predictors don't ensure 100% accuracy, they provide insight into the likelihood of a branch being taken or not, based on historical data stored in a branch target buffer table. If the prediction is correct, significant time savings are achieved, typically 3 cycles in a standard 5-stage pipeline. However, if the prediction is incorrect, the upcoming instructions speculated based on the prediction are flushed, and the pipeline is redirected to execute the actual branch instruction embedded in the program.
+
+In cases where no predictor is available, a small check is incorporated into the decode stage to ascertain whether the upcoming instruction is a branch or not. This helps in managing pipeline stalls and ensuring efficient execution of branch instructions.
+
+
+
 Fac_Test_Lab->
 
 Acuracy of Always Taken = 9.96332%
@@ -11,3 +20,18 @@ Acuracy of Always Taken = 5.27236%
 Acuracy of Always not Taken = 94.7276%
 Acuracy of One bit = 90.555%
 Acuracy of Two bit = 94.2269%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Prakhar_Shardul_Madhu
