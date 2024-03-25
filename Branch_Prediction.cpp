@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//returns unsigned value in long long data type from the binary input
 long long bitset_to_signed_long_long(const bitset<32> &bits)
 {
     long long res = bits.to_ullong();
@@ -167,7 +166,7 @@ string hex2bin(string &h, int length)
     }
     while (b.size() < length)
     {
-        b =  b+"0";
+        b = b + "0";
     }
     return b;
 }
@@ -364,7 +363,7 @@ void predict_next(long long current_address, long long next_address, long long l
 }
 
 void Accuracy()
-{cout<<"Accuracy -"<<endl;
+{
     int i = 0;
     float aAlways_taken = 0, aAlways_not_taken = 0, aOne_bit = 0, aTwo_bit = 0;
     while (i < number_of_branches)
@@ -399,12 +398,18 @@ void Accuracy()
 }
 
 void printBTB()
-{   cout<<"Branch Target Buffer - "<<endl;
-    cout<<"Branch_Address "<<"Target_Address "<<"Always_Taken "<<"Always_Not_Taken "<<"1-bit "<<"2-bit"<<endl;
+{
+    cout << "Branch Target Buffer - " << endl;
+    cout << "Branch_Address "
+         << "Target_Address "
+         << "Always_Taken "
+         << "Always_Not_Taken "
+         << "1-bit "
+         << "2-bit" << endl;
     int i;
     for (i = 0; i < number_of_branches; i++)
     {
-        cout <<hex<<"   "<<BTB.branchAddress[i] << "       " << BTB.targetAddress[i] << "         " << BTB.validAlways_taken[i] << "              " << BTB.validAlways_not_taken[i] << "           " << BTB.validone_bit[i] << "     " << BTB.validtwo_bit[i] << endl;
+        cout << hex << "   " << BTB.branchAddress[i] << "       " << BTB.targetAddress[i] << "         " << BTB.validAlways_taken[i] << "              " << BTB.validAlways_not_taken[i] << "           " << BTB.validone_bit[i] << "     " << BTB.validtwo_bit[i] << endl;
     }
 }
 
@@ -439,12 +444,11 @@ int main()
     // Read all lines into vector
     while (getline(infile, t_line))
     {
-        if(t_line.empty())
+        if (t_line.empty())
         {
             continue;
         }
         lines_vector.push_back(t_line);
-
     }
 
     string line;
@@ -471,19 +475,21 @@ int main()
             }
         }
 
-
-        if(gft!=0)
+        if (gft != 0)
         {
-        tokens.erase(tokens.begin(), tokens.begin() + gft-1);
+            tokens.erase(tokens.begin(), tokens.begin() + gft - 1);
         }
 
+        if (tokens[0] != "core")
+        {
+            continue;
+        }
 
         string pc_hex = tokens[2];
         string mc_hex = tokens[3];
+        cout << pc_hex << " " << mc_hex << " " << i << endl;
         pc_hex = pc_hex.substr(2);
         string te_pc = hex2bin(pc_hex, 32);
-
-    
 
         int res = br_check(mc_hex, 8);
         if (res == 1)
@@ -514,17 +520,22 @@ int main()
                         break;
                     }
                 }
-                
-                if(gft_2!=0)
+
+                if (gft_2 != 0)
                 {
-                tokens_2.erase(tokens_2.begin(), tokens_2.begin() + gft_2-1);
+                    tokens_2.erase(tokens_2.begin(), tokens_2.begin() + gft_2 - 1);
+                }
+
+                if (tokens_2[0] != "core")
+                {
+                    continue;
                 }
 
                 string pc_hex_2 = tokens_2[2];
                 string mc_hex_2 = tokens_2[3];
 
                 pc_hex_2 = pc_hex_2.substr(2);
-                
+
                 string te_pc_2 = hex2bin(pc_hex_2, 32);
 
                 bitset<32> curr_val(te_pc);
@@ -534,11 +545,9 @@ int main()
                 long long next_val_i = bitset_to_signed_long_long(next_val);
 
                 predict_next(curr_val_i, next_val_i, temp_label_offset);
-                
             }
         }
     }
-
 
     printBTB();
     Accuracy();
