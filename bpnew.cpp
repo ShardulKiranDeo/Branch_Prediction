@@ -246,9 +246,19 @@ long long sboffset(string &a)
         madhu++;
         b = shardul + b;
     }
-    cout << "offsetin binary= " + b << endl;
+    
     return bin2dec(b);
 }
+
+unordered_map<long long, int> one_state
+{
+
+};
+
+unordered_map<long long, string> two_state
+{
+
+};
 
 struct BTBEntry
 {
@@ -271,12 +281,16 @@ BTBEntry BTB;
 HistoryTableEntry History;
 
 int number_of_branches = 0;
-int one_state = 0;
-int two_state[2] = {0, 0};
+
 
 void predict_next(long long current_address, long long next_address, long long label)
 {
-
+   auto it = one_state.find(current_address);
+    if (it == one_state.end())
+    {
+         one_state.insert({current_address, 0});
+         two_state.insert({current_address, "00"});
+    }
     number_of_branches++;
     History.branchAddress.push_back(current_address);
     BTB.branchAddress.push_back(current_address);
@@ -302,7 +316,7 @@ void predict_next(long long current_address, long long next_address, long long l
         BTB.validAlways_not_taken.push_back(false);
     }
 
-    if (one_state == 1) // One bit
+    if (one_state[current_address] == 1) // One bit
     {
         if (next_address == current_address + label)
         {
@@ -311,10 +325,10 @@ void predict_next(long long current_address, long long next_address, long long l
         else
         {
             BTB.validone_bit.push_back(false);
-            one_state = 0;
+            one_state[current_address] = 0;
         }
     }
-    else if (one_state == 0)
+    else if (one_state[current_address] == 0)
     {
         if (next_address != current_address + label)
         {
@@ -323,48 +337,46 @@ void predict_next(long long current_address, long long next_address, long long l
         else
         {
             BTB.validone_bit.push_back(false);
-            one_state = 1;
+            one_state[current_address] = 1;
         }
     }
 
-    if (two_state[0] == 0 && two_state[1] == 0) // Two bit
+    if (two_state[current_address] == "00") // Two bit
     {
         if (next_address == current_address + label)
         {
             BTB.validtwo_bit.push_back(false);
-            two_state[1] = 1;
+            two_state[current_address] = "01";
         }
         else
         {
             BTB.validtwo_bit.push_back(true);
         }
     }
-    else if (two_state[0] == 0 && two_state[1] == 1)
+    else if (two_state[current_address] == "01")
     {
         if (next_address == current_address + label)
         {
             BTB.validtwo_bit.push_back(false);
-            two_state[1] = 0;
-            two_state[0] = 1;
+            two_state[current_address] = "10";
         }
         else
         {
             BTB.validtwo_bit.push_back(true);
-            two_state[1] = 0;
+            two_state[current_address] = "00";
         }
     }
-    else if (two_state[0] == 1 && two_state[1] == 0)
+    else if (two_state[current_address] == "10")
     {
         if (next_address == current_address + label)
         {
             BTB.validtwo_bit.push_back(true);
-            two_state[1] = 1;
+           two_state[current_address] = "11";
         }
         else
         {
             BTB.validtwo_bit.push_back(false);
-            two_state[0] = 0;
-            two_state[1] = 1;
+           two_state[current_address] = "01";
         }
     }
     else
@@ -376,7 +388,7 @@ void predict_next(long long current_address, long long next_address, long long l
         else
         {
             BTB.validtwo_bit.push_back(false);
-            two_state[1] = 0;
+            two_state[current_address] = "10";
         }
     }
 }
@@ -506,13 +518,7 @@ int main()
 
         string pc_hex = tokens[2];
         string mc_hex = tokens[3];
-        // cout << pc_hex << " " << mc_hex << " " << i << endl;
-        for (int tr = 4; tr < tokens.size(); tr++)
-        {
-            cout << tokens[tr] << " ";
-        }
-
-        cout << endl;
+       
 
         pc_hex = pc_hex.substr(2);
         string te_pc = hex2bin(pc_hex, 32);
@@ -570,7 +576,6 @@ int main()
                 long long curr_val_i = bitset_to_signed_long_long(curr_val);
                 long long next_val_i = bitset_to_signed_long_long(next_val);
 
-                cout << "offset=" << temp_label_offset << endl;
                 predict_next(curr_val_i, next_val_i, temp_label_offset);
             }
         }
@@ -578,6 +583,6 @@ int main()
 
     // printBTB();
     Accuracy();
-    cout << number_of_branches;
+   
     return 0;
 }
