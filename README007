@@ -1,0 +1,48 @@
+To run the code....
+
+
+type: g++ BP007.cpp
+then ./a.exe on windows and ./a.out on Linux
+
+The program prompts you to enter the file name . Enter the file name with its extension . If the default file type is FILE as in windows , change its extension
+to .txt. Otherwise the program accepts file in any suitable format.Change the extension of file only when the origin file does not open . In case it doesnt open
+an error will be displayed
+
+Uncommen the printBTB function inside the main to print the Target Buffer if required.
+By default it is commented out to reduce the time taken to execute the program.
+
+
+
+The program expects the input in the following format and supports branch prediction for bne,beq,beqz,bnez,blt,bltu,bgeu,bez.
+It doesnt support jump instruction as it is obvious that it always jumps no matter the state of program.
+
+core   0: 0x8000c81c (0x00150513) addi    a0, a0, 1
+core   0: 0x8000c820 (0xfff5c703) lbu     a4, -1(a1)
+core   0: 0x8000c824 (0x00078863) beqz    a5, pc + 16
+core   0: 0x8000c828 (0xfee786e3) beq     a5, a4, pc - 20
+core   0: 0x8000c814 (0x00054783) lbu     a5, 0(a0)
+core   0: 0x8000c818 (0x00158593) addi    a1, a1, 1
+core   0: 0x8000c81c (0x00150513) addi    a0, a0, 1
+core   0: 0x8000c820 (0xfff5c703) lbu     a4, -1(a1)
+core   0: 0x8000c824 (0x00078863) beqz    a5, pc + 16
+core   0: 0x8000c828 (0xfee786e3) beq     a5, a4, pc - 20
+core   0: 0x8000c82c (0x40e78533) sub     a0, a5, a4
+core   0: 0x8000c830 (0x00008067) ret
+core   0: 0x80005b98 (0x02051663) bnez    a0, pc + 44
+core   0: 0x80005bc4 (0x003c0c13) addi    s8, s8, 3
+
+
+Then it finds the branch instructions and take a note of the branch history (whether the jump taken or not) and sets the predictor whether to take the jump next time or not. It's all depends on the type of predictor (either One-Bit or Two-Bit).
+
+After the code gets executed properly, then it will be able to predict the following parameters.
+	-> total no of branch instructions with address and the address of the target instructions.
+	-> accuracy of branch taken.
+	-> accuracy of branch not taken.
+	-> accuracy of the One=Bit branch predictor.
+	-> accuracy of the Two-Bit branch predictor.
+
+
+Contributors:
+Prakhar Maurya (2022csb1102)
+Shardul Kiran Deo (2022csb1122)
+Siripurapu Madhu Sudhana Rao (2022csb1127)
